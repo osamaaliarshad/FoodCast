@@ -24,7 +24,10 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.1
+  firebase_auth: ^0.20.0+1
+  firebase_core: ^0.7.0
   flutter_riverpod: ^0.12.2
+  table_calendar: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +55,10 @@ flutter:
       fonts:
         - asset: assets/fonts/Heebo-SemiBold.ttf
           style: normal
+    - family: Spartan
+      fonts:
+        - asset: assets/fonts/Spartan/Spartan-Regular.ttf
+          style: normal          
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

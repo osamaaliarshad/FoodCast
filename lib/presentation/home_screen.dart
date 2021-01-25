@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:foodcast/constants.dart';
 import 'package:foodcast/presentation/calendar_page.dart';
 import 'package:foodcast/presentation/recipe_page.dart';
+import 'package:foodcast/presentation/settings_page.dart';
 import 'package:foodcast/presentation/today_page.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -10,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 2;
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,19 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       },
       labelType: NavigationRailLabelType.all,
+      leading: Column(
+        children: [
+          SizedBox(
+            height: height / 30,
+          ),
+          IconButton(
+              icon: Icon(
+                Icons.search,
+                color: deactiveColor,
+              ),
+              onPressed: () {}),
+        ],
+      ),
       destinations: [
         buildRotatedTextRailDestination("Calendar"),
         buildRotatedTextRailDestination("Today"),
@@ -71,7 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icons.tune,
                   color: deactiveColor,
                 ),
-                onPressed: () {}),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingsPage()),
+                  );
+                }),
           )
         ],
       ),
@@ -95,7 +114,7 @@ NavigationRailDestination buildRotatedTextRailDestination(String text) {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
           ),
         ),
       ),

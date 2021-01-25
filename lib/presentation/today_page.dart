@@ -1,11 +1,65 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
-class TodayPage extends StatelessWidget {
+class TodayPage extends StatefulWidget {
+  @override
+  _TodayPageState createState() => _TodayPageState();
+}
+
+class _TodayPageState extends State<TodayPage> {
+  var foods = [
+    'Nihari',
+    'Biryani',
+    'Chicken 65',
+    'Shawarma',
+    'Falafel',
+    'Philly Cheese Steak',
+    'Sizzling Chicken',
+    'Haleem',
+    'Steak',
+    'Burrito',
+    'Taco',
+    'Burger',
+    'Quesadilla',
+    'Paratha Roll',
+    'Chicken Mundi',
+    'BBQ Tandoori Chicken',
+    'Tandoori Chicken and Yellow Rice',
+    'Khow Suey',
+    'Singaporean Rice',
+    'Chicken Manchurian',
+    'Chicken Jalfrezi',
+    'Chicken Makhani',
+    'Cheese Garlic Bread',
+    'Chicken Sandwich',
+    'Leaf Chicken Sandwich',
+    'Chicken Egg Sandwich',
+    'Spanish Rice',
+    'Green Chicken',
+    'Chapli Kebab',
+    'Chicken Wings',
+    'Chicken Korma',
+    'Chicken Karahi',
+    'Sliders',
+    'Pizza'
+  ];
+
+  final _random = new Random();
+
+  void changeFood() {
+    setState(() {
+      var element = foods[_random.nextInt(foods.length)];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final double height = MediaQuery.of(context).size.height;
+    var element = foods[_random.nextInt(foods.length)];
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 24, 0, 0),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
         child: MediaQuery.removePadding(
           removeTop: true,
           context: context,
@@ -17,7 +71,17 @@ class TodayPage extends StatelessWidget {
               Text("Today's\nFood",
                   style: Theme.of(context).textTheme.headline4),
               SizedBox(
-                height: 24,
+                height: (height * 0.5) / 1.5,
+              ),
+              Center(child: Text(element.toString())),
+              SizedBox(
+                height: 10.0,
+              ),
+              IconButton(
+                icon: Icon(Icons.shuffle),
+                onPressed: () {
+                  changeFood();
+                },
               ),
             ],
           ),

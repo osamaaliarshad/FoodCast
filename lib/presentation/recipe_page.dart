@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:foodcast/constants.dart';
 
 class RecipePage extends StatelessWidget {
   @override
@@ -72,15 +70,15 @@ Card createStyleCard(String food, String image) {
       ),
       child: ClipRRect(
         child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4),
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: Container(
             alignment: Alignment.center,
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.black.withOpacity(0.3),
             child: Text(
               food,
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 17.0, color: activeColor, fontFamily: 'Raleway'),
+                  fontSize: 17.0, color: Colors.white, fontFamily: 'Raleway'),
             ),
           ),
         ),
