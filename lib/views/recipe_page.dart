@@ -1,9 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 
-class RecipePage extends StatelessWidget {
+class RecipePage extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, watch) {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),

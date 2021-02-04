@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FoodItem {
-  FoodItem({@required this.foodName, this.defaultImage});
+  FoodItem({@required this.foodName, this.imageAsset});
   String foodName;
-  AssetImage defaultImage = AssetImage('assets/food_images/default.png');
+  AssetImage imageAsset = AssetImage('assets/food_images/default.png');
 }

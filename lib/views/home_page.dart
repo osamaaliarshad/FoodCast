@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:foodcast/constants.dart';
-import 'package:foodcast/presentation/calendar_page.dart';
-import 'package:foodcast/presentation/recipe_page.dart';
-import 'package:foodcast/presentation/settings_page.dart';
-import 'package:foodcast/presentation/today_page.dart';
+import 'package:foodcast/views/calendar_page.dart';
+import 'package:foodcast/views/recipe_page.dart';
+import 'package:foodcast/views/settings_page.dart';
+import 'package:foodcast/views/today_page.dart';
 
 class MyHomePage extends StatefulWidget {
   @override

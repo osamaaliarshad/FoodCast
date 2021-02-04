@@ -45,18 +45,16 @@ class _TodayPageState extends State<TodayPage> {
     'Pizza'
   ];
 
-  final _random = new Random();
-
   void changeFood() {
     setState(() {
-      var element = foods[_random.nextInt(foods.length)];
+      var element = foods[Random().nextInt(foods.length)];
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
-    var element = foods[_random.nextInt(foods.length)];
+    var element = foods[Random().nextInt(foods.length)];
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),

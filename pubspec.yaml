@@ -23,10 +23,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cloud_firestore: ^0.16.0
   cupertino_icons: ^1.0.1
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
+  flutter_hooks: ^0.15.0
   flutter_riverpod: ^0.12.2
+  hooks_riverpod: ^0.12.3
   table_calendar: ^2.3.3
 
 dev_dependencies:
@@ -58,7 +61,7 @@ flutter:
     - family: Spartan
       fonts:
         - asset: assets/fonts/Spartan/Spartan-Regular.ttf
-          style: normal          
+          style: normal
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see
