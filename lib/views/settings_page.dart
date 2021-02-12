@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodcast/services/authentication_service.dart';
 
 class SettingsPage extends StatelessWidget {
   @override
@@ -9,7 +11,18 @@ class SettingsPage extends StatelessWidget {
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[Center(child: Text('content'))],
+        children: <Widget>[
+          Center(
+            child: RaisedButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                return await AuthenticationService(FirebaseAuth.instance)
+                    .signOut();
+              },
+              child: Text('Sign out'),
+            ),
+          ),
+        ],
       ),
     );
   }

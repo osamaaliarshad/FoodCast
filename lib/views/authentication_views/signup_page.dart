@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foodcast/authentication_service.dart';
 import 'package:foodcast/constants.dart';
-import 'package:foodcast/views/login_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodcast/services/authentication_service.dart';
+import 'package:foodcast/views/authentication_views/authentication_wrapper.dart';
+import 'package:foodcast/views/authentication_views/login_page.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -51,11 +52,16 @@ class _SignupScreenState extends State<SignupScreen> {
                   width: double.infinity,
                   child: RaisedButton(
                     elevation: 5.0,
-                    onPressed: () async =>
-                        await AuthenticationService(FirebaseAuth.instance)
-                            .signUp(
-                                email: emailController.text,
-                                password: passwordController.text),
+                    onPressed: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AuthenticationWrapper()));
+                      return await AuthenticationService(FirebaseAuth.instance)
+                          .signUp(
+                              email: emailController.text,
+                              password: passwordController.text);
+                    },
                     padding: EdgeInsets.all(15.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -71,10 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LoginScreen()),
-                  ),
+                  onTap: () => Navigator.pop(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

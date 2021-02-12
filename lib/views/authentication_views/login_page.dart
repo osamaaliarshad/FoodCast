@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodcast/constants.dart';
-import 'package:foodcast/views/signup_page.dart';
+import 'package:foodcast/services/authentication_service.dart';
+import 'package:foodcast/views/authentication_views/signup_page.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -60,8 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   child: RaisedButton(
                     elevation: 5.0,
-                    onPressed: () =>
-                        print(emailController.text + passwordController.text),
+                    onPressed: () async {
+                      return await AuthenticationService(FirebaseAuth.instance)
+                          .signIn(
+                              email: emailController.text,
+                              password: passwordController.text);
+                    },
                     padding: EdgeInsets.all(15.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0),

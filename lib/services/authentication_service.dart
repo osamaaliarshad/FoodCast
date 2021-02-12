@@ -5,13 +5,18 @@ class AuthenticationService {
 
   AuthenticationService(this._firebaseAuth);
 
+  // this is very important and is what we are going to listen to in the widget tree
   Stream<User> get authStateChanges => _firebaseAuth.authStateChanges();
+
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
+  }
 
   Future<String> signIn({String email, String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return 'Signed in';
+      return 'signed in';
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
@@ -21,13 +26,9 @@ class AuthenticationService {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return 'Signed up';
+      return 'signed up';
     } on FirebaseAuthException catch (e) {
       return e.message;
     }
-  }
-
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
   }
 }
