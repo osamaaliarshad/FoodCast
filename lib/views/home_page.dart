@@ -5,6 +5,8 @@ import 'package:foodcast/views/recipe_page.dart';
 import 'package:foodcast/views/settings_page.dart';
 import 'package:foodcast/views/today_page.dart';
 
+import 'add_food.dart';
+
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -20,14 +22,23 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddFood(
+                      isFromEdit:
+                          false, // this is required , because we are going to use the same UI screen for creating as well as updating a movie . So just to distinguish between both contexts.
+                    )),
+          );
+        },
         backgroundColor: sidebarColor,
         child: Icon(
           Icons.add,
           color: activeColor,
         ),
       ),
-      backgroundColor: Color(0xFFFBFAFD),
+      backgroundColor: Colors.white,
       body: Row(
         children: <Widget>[
           buildNavigationRail(width, height),
@@ -50,9 +61,11 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: sidebarColor,
       selectedIndex: _selectedIndex,
       onDestinationSelected: (int index) {
-        setState(() {
-          _selectedIndex = index;
-        });
+        setState(
+          () {
+            _selectedIndex = index;
+          },
+        );
       },
       labelType: NavigationRailLabelType.all,
       leading: Column(

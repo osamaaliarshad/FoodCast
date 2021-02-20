@@ -1,57 +1,15 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/all.dart';
+import 'package:foodcast/providers/database_providers.dart';
+import 'package:foodcast/views/food_list.dart';
 
 class RecipePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, watch) {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
-        child: MediaQuery.removePadding(
-          context: context,
-          child: GridView.count(
-            crossAxisCount: 2,
-            children: <Widget>[
-              createStyleCard('Nihari', 'nihari.jpg'),
-              createStyleCard('Biryani', 'biryani.jpg'),
-              createStyleCard('Chicken 65', 'chicken65.jpg'),
-              createStyleCard('Shawarma', 'shawarma.jpg'),
-              createStyleCard('Falafel', 'falafel.jpg'),
-              createStyleCard('Philly Cheese Steak', 'phillycheese.jpg'),
-              createStyleCard('Sizzling Chicken', 'sizzlingchicken.jpg'),
-              createStyleCard('Haleem', 'haleem.png'),
-              createStyleCard('Steak', 'chickensteak.png'),
-              createStyleCard('Burrito', 'burrito.jpeg'),
-              createStyleCard('Taco', 'taco.jpg'),
-              createStyleCard('Burger', 'burger.jpg'),
-              createStyleCard('Quesadilla', 'quesadilla.jpg'),
-              createStyleCard('Paratha Roll', 'paratharoll.jpg'),
-              createStyleCard('Chicken Mundee', 'chickenmundi.jpg'),
-              createStyleCard('BBQ Tandoori Chicken', 'bbqtandoori.jpg'),
-              createStyleCard('Tandoori Chicken and Yellow Rice',
-                  'tandoorichickenandyellowrice.jpg'),
-              createStyleCard('Khow Suey', 'khowsuey.png'),
-              createStyleCard('Singaporean Rice', 'singaporeanrice.jpg'),
-              createStyleCard('Chicken Manchurian', 'chickenmanchurian.jpg'),
-              createStyleCard('Chicken Jalfrezi', 'chickenjalfrezi.jpg'),
-              createStyleCard('Chicken Makhani', 'chickenmakhani.jpg'),
-              createStyleCard('Cheese\nGarlic\nBread', 'cheesegarlicbread.jpg'),
-              createStyleCard('Chicken Sandwich', 'chickensandwich.jpg'),
-              createStyleCard(
-                  'Leaf Chicken Sandwich', 'leafchickensandwich.jpg'),
-              createStyleCard('Chicken Egg Sandiwch', 'chickeneggsandwich.jpg'),
-              createStyleCard('Spanish Rice', 'spanishrice.jpg'),
-              createStyleCard('Green Chicken', 'greenchicken.jpg'),
-              createStyleCard('Chapli Kebab', 'chaplikebab.jpg'),
-              createStyleCard('Chicken Wings', 'chickenwings.jpg'),
-              createStyleCard('Chicken Korma', 'chickenkorma.png'),
-              createStyleCard('Chicken Karahi', 'chickenkarahi.jpg'),
-              createStyleCard('Sliders', 'sliders.jpeg'),
-              createStyleCard('Pizza', 'pizza.JPG'),
-            ],
-          ),
-        ),
+      child: Center(
+        child: Text('foods'),
       ),
     );
   }

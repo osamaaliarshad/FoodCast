@@ -4,7 +4,6 @@ import 'package:foodcast/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodcast/services/authentication_service.dart';
 import 'package:foodcast/views/authentication_views/authentication_wrapper.dart';
-import 'package:foodcast/views/authentication_views/login_page.dart';
 
 class SignupScreen extends StatefulWidget {
   @override
@@ -54,9 +53,11 @@ class _SignupScreenState extends State<SignupScreen> {
                     elevation: 5.0,
                     onPressed: () async {
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AuthenticationWrapper()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AuthenticationWrapper(),
+                        ),
+                      );
                       return await AuthenticationService(FirebaseAuth.instance)
                           .signUp(
                               email: emailController.text,
