@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foodcast/constants.dart';
+import 'package:foodcast/views/add_food_page.dart';
 import 'package:foodcast/views/calendar_page.dart';
+import 'package:foodcast/views/food_page.dart';
 import 'package:foodcast/views/recipe_page.dart';
 import 'package:foodcast/views/settings_page.dart';
 import 'package:foodcast/views/today_page.dart';
-
-import 'add_food.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -24,13 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddFood(
-                      isFromEdit:
-                          false, // this is required , because we are going to use the same UI screen for creating as well as updating a movie . So just to distinguish between both contexts.
-                    )),
-          );
+              context, MaterialPageRoute(builder: (context) => FoodPage()));
         },
         backgroundColor: sidebarColor,
         child: Icon(

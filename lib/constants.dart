@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const Color activeColor = Color(0xFF111111);
 const Color deactiveColor = Color(0xFF8a8d94);
 const Color sidebarColor = Color(0xFFDEE8FF);
+const Color blueColor = Color(0xFF6CA8F1);
 
 final kBoxDecorationStyle = BoxDecoration(
   color: Color(0xFF6CA8F1),
@@ -34,11 +35,44 @@ Container customInputBox(String hint, Icon icon, TextInputType inputType,
         border: InputBorder.none,
         contentPadding: EdgeInsets.only(top: 14.0),
         prefixIcon: icon,
-        hintText: 'Enter your $hint',
+        hintText: hint,
         hintStyle: TextStyle(
           color: Colors.white54,
         ),
       ),
     ),
   );
+}
+
+class FoodPageTextField extends StatelessWidget {
+  const FoodPageTextField({
+    Key key,
+    @required this.foodNameController,
+    this.hintText,
+  }) : super(key: key);
+
+  final TextEditingController foodNameController;
+  final String hintText;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: foodNameController,
+      maxLines: null,
+      style: TextStyle(color: Colors.white, fontSize: 25),
+      cursorColor: blueColor,
+      textAlign: TextAlign.center,
+      decoration: InputDecoration(
+        hintMaxLines: 5,
+        labelStyle: TextStyle(color: Colors.white),
+        hintText: hintText,
+        hintStyle: TextStyle(color: Colors.white),
+        enabledBorder: InputBorder.none,
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+      ),
+    );
+  }
 }

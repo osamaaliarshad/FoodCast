@@ -33,15 +33,18 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('Email'),
-                customInputBox('Email', Icon(Icons.email, color: Colors.white),
-                    TextInputType.emailAddress, emailController,
+                customInputBox(
+                    'Enter your email',
+                    Icon(Icons.email, color: Colors.white),
+                    TextInputType.emailAddress,
+                    emailController,
                     obscureText: false),
                 SizedBox(
                   height: 30,
                 ),
                 Text('Password'),
                 customInputBox(
-                  'Password',
+                  'Enter your password',
                   Icon(Icons.lock, color: Colors.white),
                   TextInputType.visiblePassword,
                   passwordController,

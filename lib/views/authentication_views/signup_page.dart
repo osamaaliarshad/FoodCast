@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:foodcast/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodcast/providers/auth_providers.dart';
 import 'package:foodcast/services/authentication_service.dart';
 import 'package:foodcast/views/authentication_views/authentication_wrapper.dart';
+import 'package:flutter_riverpod/all.dart';
 
-class SignupScreen extends StatefulWidget {
-  @override
-  _SignupScreenState createState() => _SignupScreenState();
-}
+import 'package:flutter/foundation.dart';
 
-class _SignupScreenState extends State<SignupScreen> {
+class SignupScreen extends ConsumerWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, watch) {
+    final authState = watch(authStateChangeProvider);
     return Scaffold(
       backgroundColor: sidebarColor,
       body: Center(
@@ -32,15 +32,18 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text('Email'),
-                customInputBox('Email', Icon(Icons.email, color: Colors.white),
-                    TextInputType.emailAddress, emailController,
+                customInputBox(
+                    'Enter your Email',
+                    Icon(Icons.email, color: Colors.white),
+                    TextInputType.emailAddress,
+                    emailController,
                     obscureText: false),
                 SizedBox(
                   height: 30,
                 ),
                 Text('Password'),
                 customInputBox(
-                  'Password',
+                  'Enter your Password',
                   Icon(Icons.lock, color: Colors.white),
                   TextInputType.visiblePassword,
                   passwordController,
@@ -52,12 +55,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   child: RaisedButton(
                     elevation: 5.0,
                     onPressed: () async {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AuthenticationWrapper(),
-                        ),
-                      );
                       return await AuthenticationService(FirebaseAuth.instance)
                           .signUp(
                               email: emailController.text,
