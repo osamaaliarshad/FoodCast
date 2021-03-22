@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:foodcast/constants.dart';
-import 'package:foodcast/views/add_food_page.dart';
 import 'package:foodcast/views/calendar_page.dart';
 import 'package:foodcast/views/food_page.dart';
 import 'package:foodcast/views/recipe_page.dart';
