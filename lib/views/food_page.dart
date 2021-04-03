@@ -106,7 +106,7 @@ class FoodPage extends ConsumerWidget {
           if (pickedFile != null) {
             TaskSnapshot snapshot = await FirebaseStorage.instance
                 .ref()
-                .child('images')
+                .child('images/${DateTime.now()}')
                 .putFile(File(pickedFile.path));
             if (snapshot != null) {
               final String downloadURL = await snapshot.ref.getDownloadURL();
