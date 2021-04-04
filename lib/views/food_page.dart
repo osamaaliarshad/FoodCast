@@ -8,6 +8,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 
+Future<PickedFile> getFileImage() async {
+  return await ImagePicker().getImage(source: ImageSource.gallery);
+}
+
 class FoodPage extends ConsumerWidget {
   final FoodItem food;
   const FoodPage({Key key, this.food}) : super(key: key);
@@ -17,6 +21,7 @@ class FoodPage extends ConsumerWidget {
     final isEdit = food != null;
     final foodNameTextController = TextEditingController();
     PickedFile pickedFile;
+    //
     return Scaffold(
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
@@ -53,9 +58,11 @@ class FoodPage extends ConsumerWidget {
                 Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: isEdit
-                          ? NetworkImage(food?.imageURL.toString())
-                          : NetworkImage('https://i.imgur.com/QKYJihU.png'),
+                      image: pickedFile == null
+                          ? (isEdit
+                              ? NetworkImage(food?.imageURL.toString())
+                              : NetworkImage('https://i.imgur.com/QKYJihU.png'))
+                          : FileImage(File(pickedFile.path)),
                       fit: BoxFit.cover,
                       alignment: Alignment.topCenter,
                     ),
@@ -116,8 +123,9 @@ class FoodPage extends ConsumerWidget {
 
           final foodItem = FoodItem(
             foodName: foodsName,
-            imageURL:
-                imagesURL == '' ? 'https://i.imgur.com/QKYJihU.png' : imagesURL,
+            imageURL: imagesURL == null
+                ? 'https://i.imgur.com/QKYJihU.png'
+                : imagesURL,
           );
           handleFoodUpdate(
             isEdit: isEdit,

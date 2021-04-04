@@ -2,10 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/all.dart';
-import 'package:foodcast/providers/auth_providers.dart';
 import 'package:foodcast/views/authentication_views/authentication_wrapper.dart';
-import 'package:foodcast/views/authentication_views/login_page.dart';
-import 'package:foodcast/views/home_page.dart';
 import 'constants.dart';
 
 void main() async {
