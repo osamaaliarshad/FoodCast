@@ -21,7 +21,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   bool isLoading = false;
   File? _image;
   final picker = ImagePicker();
-  String? downloadURL;
+  String? imageUrl;
 
   Future getImage() async {
     try {
@@ -124,53 +124,66 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
         ),
         // click this button to confirm changes made to food item
         onPressed: () async {
-          if (isLoading != true) {
-            if (_image != null) {
-              TaskSnapshot snapshot = await FirebaseStorage.instance
-                  .ref()
-                  .child('images/${DateTime.now()}')
-                  .putFile(_image!);
+          if (_image != null) {
+            setState(() {
+              buildShowDialog(context);
 
-              downloadURL = await snapshot.ref.getDownloadURL();
-            }
-            (isEdit
-                ? context
-                    .read(foodItemListControllerProvider)
-                    .updateItem(
-                      updatedItem: widget.food.copyWith(
-                          foodName: foodNameTextController.text.isEmpty
-                              ? widget.food.foodName.toString()
-                              : foodNameTextController.text.trim(),
-                          imageUrl: _image != null
-                              ? downloadURL!
-                              : widget.food.imageUrl.toString()),
-                    )
-                    .then((value) => setState(() {
-                          isLoading = true;
-                        }))
-                    .then((value) => Navigator.of(context).pop())
-                : foodNameTextController.text.trim().isEmpty
-                    ? ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Please enter the food name'),
-                        ),
-                      )
-                    : context
-                        .read(foodItemListControllerProvider)
-                        .addItem(
-                            name: foodNameTextController.text.trim(),
-                            imageUrl: _image != null
-                                ? downloadURL!
-                                : 'https://i.imgur.com/QKYJihU.png')
-                        .then((value) => setState(() {
-                              isLoading = true;
-                            }))
-                        .then(
-                          (value) => Navigator.of(context).pop(),
-                        ));
+              isLoading = true;
+            });
+            TaskSnapshot snapshot = await FirebaseStorage.instance
+                .ref()
+                .child('images/${DateTime.now()}')
+                .putFile(_image!);
+
+            var downloadURL = await snapshot.ref.getDownloadURL();
+            setState(() {
+              imageUrl = downloadURL;
+              isLoading = false;
+              Navigator.of(context).pop();
+            });
           }
+          (isEdit
+              ? context
+                  .read(foodItemListControllerProvider)
+                  .updateItem(
+                    updatedItem: widget.food.copyWith(
+                        foodName: foodNameTextController.text.isEmpty
+                            ? widget.food.foodName.toString()
+                            : foodNameTextController.text.trim(),
+                        imageUrl: _image != null
+                            ? imageUrl!
+                            : widget.food.imageUrl.toString()),
+                  )
+                  .then((value) => Navigator.of(context).pop())
+              : foodNameTextController.text.trim().isEmpty
+                  ? ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please enter the food name'),
+                      ),
+                    )
+                  : context
+                      .read(foodItemListControllerProvider)
+                      .addItem(
+                          name: foodNameTextController.text.trim(),
+                          imageUrl: _image != null
+                              ? imageUrl!
+                              : 'https://i.imgur.com/QKYJihU.png')
+                      .then(
+                        (value) => Navigator.of(context).pop(),
+                      ));
         },
       ),
     );
   }
+}
+
+buildShowDialog(BuildContext context) {
+  return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      });
 }

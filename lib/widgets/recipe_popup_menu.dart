@@ -54,7 +54,7 @@ Future showRecipePagePopupMenu(BuildContext context, FoodItem foodItem,
                             style: TextStyle(color: Colors.black),
                           ),
                           style: ElevatedButton.styleFrom(
-                            primary: sidebarColor,
+                            primary: Colors.red.shade200,
                           ),
                         ),
                         SizedBox(width: 20),
