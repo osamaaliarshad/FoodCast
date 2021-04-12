@@ -46,6 +46,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   @override
   Widget build(BuildContext context) {
     final foodNameTextController = TextEditingController();
+    var _textTheme = Theme.of(context).textTheme;
 
     //
     return Scaffold(
@@ -104,10 +105,25 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              Text(
-                'recipe data here',
-                style: TextStyle(fontSize: 200),
+              Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.black),
+                  )
+                ],
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  maxLines: null,
+                  style: _textTheme.bodyText2,
+                  decoration: InputDecoration(
+                      border: InputBorder.none, hintText: 'Recipe info here'),
+                ),
+              )
             ]),
           ),
         ],
