@@ -1,6 +1,6 @@
 {
-    "name": "foodcast",
-    "short_name": "foodcast",
+    "name": "food_cast2",
+    "short_name": "food_cast2",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

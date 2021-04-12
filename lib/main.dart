@@ -1,9 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/all.dart';
-import 'package:foodcast/views/authentication_views/authentication_wrapper.dart';
-import 'constants.dart';
+import 'package:foodcast/widgets/constants.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'general_providers.dart';
+import 'pages/auth_pages/login_page.dart';
+import 'pages/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +30,28 @@ class MyApp extends StatelessWidget {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(primaryColor: sidebarColor, fontFamily: 'Spartan'),
       home: AuthenticationWrapper(),
     );
   }
 }
+
+class AuthenticationWrapper extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, ScopedReader watch) {
+    return watch(authStateChangeProvider).when(
+      data: (user) => user == null ? LoginScreen() : MyHomePage(),
+      loading: () => CircularProgressIndicator(),
+      error: (err, stack) => LoginScreen(),
+    );
+  }
+}
+
+// class AuthWrapper extends HookWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final authControllerState = useProvider(authControllerProvider.state);
+//     return Container();
+//   }
+// }

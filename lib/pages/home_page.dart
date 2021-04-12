@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:foodcast/constants.dart';
-import 'package:foodcast/views/calendar_page.dart';
-import 'package:foodcast/views/food_page.dart';
-import 'package:foodcast/views/recipe_page.dart';
-import 'package:foodcast/views/settings_page.dart';
-import 'package:foodcast/views/today_page.dart';
+import 'package:foodcast/models/food_item_model.dart';
+import 'package:foodcast/pages/navigation_rail_pages/calendar_page.dart';
+import 'package:foodcast/pages/navigation_rail_pages/recipe/food_info_page.dart';
+import 'package:foodcast/pages/navigation_rail_pages/recipe/recipe_page.dart';
+import 'package:foodcast/pages/settings_page.dart';
+import 'package:foodcast/pages/navigation_rail_pages/today_page.dart';
+import 'package:foodcast/widgets/constants.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -20,17 +21,7 @@ class _MyHomePageState extends State<MyHomePage> {
     final double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => FoodPage()));
-        },
-        backgroundColor: sidebarColor,
-        child: Icon(
-          Icons.add,
-          color: activeColor,
-        ),
-      ),
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       body: Row(
         children: <Widget>[

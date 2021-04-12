@@ -19,7 +19,7 @@ final kBoxDecorationStyle = BoxDecoration(
 
 Container customInputBox(String hint, Icon icon, TextInputType inputType,
     TextEditingController textController,
-    {@required bool obscureText}) {
+    {required bool obscureText}) {
   return Container(
     alignment: Alignment.centerLeft,
     decoration: kBoxDecorationStyle,
@@ -46,9 +46,9 @@ Container customInputBox(String hint, Icon icon, TextInputType inputType,
 
 class FoodPageTextField extends StatelessWidget {
   const FoodPageTextField({
-    Key key,
-    @required this.foodNameController,
-    this.hintText,
+    Key? key,
+    required this.foodNameController,
+    required this.hintText,
   }) : super(key: key);
 
   final TextEditingController foodNameController;

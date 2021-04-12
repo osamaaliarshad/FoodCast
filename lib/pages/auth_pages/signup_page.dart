@@ -1,21 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:foodcast/constants.dart';
-import 'package:foodcast/services/authentication_service.dart';
-import 'package:foodcast/views/authentication_views/signup_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:foodcast/repositories/auth_repository.dart';
+import 'package:foodcast/widgets/constants.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
+class SignupScreen extends ConsumerWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, watch) {
     return Scaffold(
       backgroundColor: sidebarColor,
       body: Center(
@@ -24,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: EdgeInsets.all(30.0),
           children: [
             Text(
-              'Sign In',
+              'Sign Up',
               style: TextStyle(fontSize: 30.0),
             ),
             SizedBox(height: 20),
@@ -34,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: <Widget>[
                 Text('Email'),
                 customInputBox(
-                    'Enter your email',
+                    'Enter your Email',
                     Icon(Icons.email, color: Colors.white),
                     TextInputType.emailAddress,
                     emailController,
@@ -44,21 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Text('Password'),
                 customInputBox(
-                  'Enter your password',
+                  'Enter your Password',
                   Icon(Icons.lock, color: Colors.white),
                   TextInputType.visiblePassword,
                   passwordController,
                   obscureText: true,
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: FlatButton(
-                    onPressed: () => print('Forgot Password Button Pressed'),
-                    padding: EdgeInsets.only(right: 0.0),
-                    child: Text(
-                      'Forgot Password?',
-                    ),
-                  ),
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(vertical: 25.0),
@@ -66,10 +50,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: RaisedButton(
                     elevation: 5.0,
                     onPressed: () async {
-                      return await AuthenticationService(FirebaseAuth.instance)
-                          .signIn(
-                              email: emailController.text,
-                              password: passwordController.text);
+                      return await context
+                          .read(authRepositoryProvider)
+                          .signUpWithEmailandPassword(
+                              emailController.text, passwordController.text);
                     },
                     padding: EdgeInsets.all(15.0),
                     shape: RoundedRectangleBorder(
@@ -77,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     color: Colors.white,
                     child: Text(
-                      'LOGIN',
+                      'SIGNUP',
                       style: TextStyle(
                         letterSpacing: 1.5,
                         fontSize: 18.0,
@@ -86,22 +70,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignupScreen()),
-                  ),
+                  onTap: () => Navigator.pop(context),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an Account? ',
+                        'Have an Account? ',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,
                         ),
                       ),
                       Text(
-                        'Sign Up',
+                        'Sign In',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18.0,

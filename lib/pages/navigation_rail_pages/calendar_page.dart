@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:foodcast/constants.dart';
+import 'package:foodcast/widgets/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -8,16 +8,13 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
-  CalendarController _calendarController;
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
   }
 
   @override
   void dispose() {
-    _calendarController.dispose();
     super.dispose();
   }
 
@@ -40,16 +37,19 @@ class _CalendarPageState extends State<CalendarPage> {
                 height: (height * 0.5) / 5,
               ),
               TableCalendar(
-                calendarController: _calendarController,
-                calendarStyle: CalendarStyle(
-                  weekendStyle: TextStyle(color: Colors.black),
-                  outsideDaysVisible: false,
-                  todayColor: activeColor,
-                  selectedColor: sidebarColor,
-                  selectedStyle: TextStyle(color: Colors.black),
-                  outsideWeekendStyle: TextStyle(color: Colors.black),
-                ),
-              ),
+                  calendarStyle: CalendarStyle(
+                    todayDecoration: BoxDecoration(
+                      color: sidebarColor,
+                      shape: BoxShape.circle,
+                    ),
+                    todayTextStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16.0,
+                    ), //
+                  ),
+                  focusedDay: DateTime.now(),
+                  firstDay: DateTime.utc(2021, 1, 28),
+                  lastDay: DateTime.utc(2030, 3, 14)),
               SizedBox(
                 height: 50,
               ),
