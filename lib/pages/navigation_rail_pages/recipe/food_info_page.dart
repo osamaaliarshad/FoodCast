@@ -18,7 +18,6 @@ class FoodInfoPage extends StatefulWidget {
 
 class _FoodInfoPageState extends State<FoodInfoPage> {
   bool get isEdit => widget.food.id != null;
-  bool isLoading = false;
   File? _image;
   final picker = ImagePicker();
   String? imageUrl;
@@ -136,28 +135,24 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: sidebarColor),
+                        width: 80,
+                        height: 80,
+                        decoration: BoxDecoration(boxShadow: [
+                          BoxShadow(
+                              spreadRadius: 10,
+                              blurRadius: 10,
+                              color: Colors.grey)
+                        ], shape: BoxShape.circle, color: sidebarColor),
+                        child: Center(child: Text('Calories:')),
                       ),
                       Container(
-                        width: 60,
-                        height: 60,
+                        width: 80,
+                        height: 80,
                         decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: sidebarColor),
-                      ),
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: sidebarColor),
-                      ),
-                      Container(
-                        width: 60,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle, color: sidebarColor),
+                            boxShadow: [BoxShadow()],
+                            shape: BoxShape.circle,
+                            color: sidebarColor),
+                        child: Center(child: Text('Last Made:')),
                       ),
                     ],
                   ),
@@ -189,58 +184,67 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
         ),
         // click this button to confirm changes made to food item
         onPressed: () async {
-          if (_image != null) {
-            setState(() {
-              buildShowDialog(context);
+          try {
+            if (_image != null) {
+              FirebaseStorage.instance
+                  .setMaxUploadRetryTime(Duration(seconds: 3));
+              setState(() {
+                buildShowDialog(context);
+              });
+              TaskSnapshot snapshot = await FirebaseStorage.instance
+                  .ref()
+                  .child('images/${DateTime.now()}')
+                  .putFile(_image!);
 
-              isLoading = true;
-            });
-            TaskSnapshot snapshot = await FirebaseStorage.instance
-                .ref()
-                .child('images/${DateTime.now()}')
-                .putFile(_image!);
+              var downloadURL = await snapshot.ref.getDownloadURL();
+              setState(() {
+                imageUrl = downloadURL;
 
-            var downloadURL = await snapshot.ref.getDownloadURL();
-            setState(() {
-              imageUrl = downloadURL;
-              isLoading = false;
-              Navigator.of(context).pop();
-            });
-          }
-          (isEdit
-              ? context
-                  .read(foodItemListControllerProvider)
-                  .updateItem(
-                    updatedItem: widget.food.copyWith(
-                      foodName: foodNameTextController.text.isEmpty
-                          ? widget.food.foodName.toString()
-                          : foodNameTextController.text.trim(),
-                      imageUrl: _image != null
-                          ? imageUrl!
-                          : widget.food.imageUrl.toString(),
-                      body: bodyTextController.text.isEmpty
-                          ? ''
-                          : bodyTextController.text.trim(),
-                    ),
-                  )
-                  .then((value) => Navigator.of(context).pop())
-              : foodNameTextController.text.trim().isEmpty
-                  ? ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Please enter the food name'),
+                Navigator.of(context).pop();
+              });
+            }
+            (isEdit
+                ? context
+                    .read(foodItemListControllerProvider)
+                    .updateItem(
+                      updatedItem: widget.food.copyWith(
+                        foodName: foodNameTextController.text.isEmpty
+                            ? widget.food.foodName.toString()
+                            : foodNameTextController.text.trim(),
+                        imageUrl: _image != null
+                            ? imageUrl!
+                            : widget.food.imageUrl.toString(),
+                        body: bodyTextController.text.isEmpty
+                            ? ''
+                            : bodyTextController.text.trim(),
                       ),
                     )
-                  : context
-                      .read(foodItemListControllerProvider)
-                      .addItem(
-                          name: foodNameTextController.text.trim(),
-                          body: bodyTextController.text.trim(),
-                          imageUrl: _image != null
-                              ? imageUrl!
-                              : 'https://i.imgur.com/QKYJihU.png')
-                      .then(
-                        (value) => Navigator.of(context).pop(),
-                      ));
+                    .then((value) => Navigator.of(context).pop())
+                : foodNameTextController.text.trim().isEmpty
+                    ? ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Please enter the food name'),
+                        ),
+                      )
+                    : context
+                        .read(foodItemListControllerProvider)
+                        .addItem(
+                            name: foodNameTextController.text.trim(),
+                            body: bodyTextController.text.trim(),
+                            imageUrl: _image != null
+                                ? imageUrl!
+                                : 'https://i.imgur.com/QKYJihU.png')
+                        .then(
+                          (value) => Navigator.of(context).pop(),
+                        ));
+          } on Exception catch (e) {
+            print(e.toString());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(e.toString()),
+              ),
+            );
+          }
         },
       ),
     );
