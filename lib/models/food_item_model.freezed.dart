@@ -18,10 +18,12 @@ class _$FoodItemTearOff {
 
   _FoodItem call(
       {String? id,
+      String? body,
       required String foodName,
       String imageUrl = 'https://i.imgur.com/QKYJihU.png'}) {
     return _FoodItem(
       id: id,
+      body: body,
       foodName: foodName,
       imageUrl: imageUrl,
     );
@@ -38,6 +40,7 @@ const $FoodItem = _$FoodItemTearOff();
 /// @nodoc
 mixin _$FoodItem {
   String? get id;
+  String? get body;
   String get foodName;
   String get imageUrl;
 
@@ -50,7 +53,7 @@ mixin _$FoodItem {
 abstract class $FoodItemCopyWith<$Res> {
   factory $FoodItemCopyWith(FoodItem value, $Res Function(FoodItem) then) =
       _$FoodItemCopyWithImpl<$Res>;
-  $Res call({String? id, String foodName, String imageUrl});
+  $Res call({String? id, String? body, String foodName, String imageUrl});
 }
 
 /// @nodoc
@@ -64,11 +67,13 @@ class _$FoodItemCopyWithImpl<$Res> implements $FoodItemCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
+    Object? body = freezed,
     Object? foodName = freezed,
     Object? imageUrl = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
+      body: body == freezed ? _value.body : body as String?,
       foodName: foodName == freezed ? _value.foodName : foodName as String,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
     ));
@@ -80,7 +85,7 @@ abstract class _$FoodItemCopyWith<$Res> implements $FoodItemCopyWith<$Res> {
   factory _$FoodItemCopyWith(_FoodItem value, $Res Function(_FoodItem) then) =
       __$FoodItemCopyWithImpl<$Res>;
   @override
-  $Res call({String? id, String foodName, String imageUrl});
+  $Res call({String? id, String? body, String foodName, String imageUrl});
 }
 
 /// @nodoc
@@ -95,11 +100,13 @@ class __$FoodItemCopyWithImpl<$Res> extends _$FoodItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
+    Object? body = freezed,
     Object? foodName = freezed,
     Object? imageUrl = freezed,
   }) {
     return _then(_FoodItem(
       id: id == freezed ? _value.id : id as String?,
+      body: body == freezed ? _value.body : body as String?,
       foodName: foodName == freezed ? _value.foodName : foodName as String,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
     ));
@@ -112,6 +119,7 @@ class __$FoodItemCopyWithImpl<$Res> extends _$FoodItemCopyWithImpl<$Res>
 class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
   const _$_FoodItem(
       {this.id,
+      this.body,
       required this.foodName,
       this.imageUrl = 'https://i.imgur.com/QKYJihU.png'})
       : super._();
@@ -122,6 +130,8 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
   @override
   final String? id;
   @override
+  final String? body;
+  @override
   final String foodName;
   @JsonKey(defaultValue: 'https://i.imgur.com/QKYJihU.png')
   @override
@@ -129,7 +139,7 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FoodItem(id: $id, foodName: $foodName, imageUrl: $imageUrl)';
+    return 'FoodItem(id: $id, body: $body, foodName: $foodName, imageUrl: $imageUrl)';
   }
 
   @override
@@ -138,6 +148,7 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
     properties
       ..add(DiagnosticsProperty('type', 'FoodItem'))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('body', body))
       ..add(DiagnosticsProperty('foodName', foodName))
       ..add(DiagnosticsProperty('imageUrl', imageUrl));
   }
@@ -148,6 +159,8 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
         (other is _FoodItem &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.body, body) ||
+                const DeepCollectionEquality().equals(other.body, body)) &&
             (identical(other.foodName, foodName) ||
                 const DeepCollectionEquality()
                     .equals(other.foodName, foodName)) &&
@@ -160,6 +173,7 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(body) ^
       const DeepCollectionEquality().hash(foodName) ^
       const DeepCollectionEquality().hash(imageUrl);
 
@@ -177,12 +191,17 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
 abstract class _FoodItem extends FoodItem {
   const _FoodItem._() : super._();
   const factory _FoodItem(
-      {String? id, required String foodName, String imageUrl}) = _$_FoodItem;
+      {String? id,
+      String? body,
+      required String foodName,
+      String imageUrl}) = _$_FoodItem;
 
   factory _FoodItem.fromJson(Map<String, dynamic> json) = _$_FoodItem.fromJson;
 
   @override
   String? get id;
+  @override
+  String? get body;
   @override
   String get foodName;
   @override

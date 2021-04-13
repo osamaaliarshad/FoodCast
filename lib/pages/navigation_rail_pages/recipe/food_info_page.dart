@@ -45,7 +45,11 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final foodNameTextController = TextEditingController();
+    final foodNameTextController =
+        TextEditingController(text: widget.food.foodName.toString());
+    final bodyTextController = TextEditingController(
+      text: widget.food.body?.toString(),
+    );
     var _textTheme = Theme.of(context).textTheme;
 
     //
@@ -63,11 +67,8 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
               title: Padding(
                 padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: FoodPageTextField(
-                  foodNameController: foodNameTextController,
-                  hintText: !isEdit
-                      ? 'Enter food name'
-                      : widget.food.foodName.toString(),
-                ),
+                    foodNameController: foodNameTextController,
+                    hintText: 'Enter food name'),
               ),
               centerTitle: true,
               stretchModes: [StretchMode.zoomBackground, StretchMode.fadeTitle],
@@ -103,25 +104,73 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Container(
+              color: Colors.grey,
+              height: 20,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(20.0),
+                        topRight: const Radius.circular(20.0),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           SliverList(
             delegate: SliverChildListDelegate([
-              Row(
+              Column(
                 children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.black),
-                  )
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: sidebarColor),
+                      ),
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: sidebarColor),
+                      ),
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: sidebarColor),
+                      ),
+                      Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: sidebarColor),
+                      ),
+                    ],
+                  ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextField(
+                child: TextFormField(
+                  controller: bodyTextController,
                   maxLines: null,
                   style: _textTheme.bodyText2,
                   decoration: InputDecoration(
-                      border: InputBorder.none, hintText: 'Recipe info here'),
+                      border: InputBorder.none, hintText: 'Recipe Info Here'),
                 ),
               )
             ]),
@@ -163,12 +212,16 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   .read(foodItemListControllerProvider)
                   .updateItem(
                     updatedItem: widget.food.copyWith(
-                        foodName: foodNameTextController.text.isEmpty
-                            ? widget.food.foodName.toString()
-                            : foodNameTextController.text.trim(),
-                        imageUrl: _image != null
-                            ? imageUrl!
-                            : widget.food.imageUrl.toString()),
+                      foodName: foodNameTextController.text.isEmpty
+                          ? widget.food.foodName.toString()
+                          : foodNameTextController.text.trim(),
+                      imageUrl: _image != null
+                          ? imageUrl!
+                          : widget.food.imageUrl.toString(),
+                      body: bodyTextController.text.isEmpty
+                          ? ''
+                          : bodyTextController.text.trim(),
+                    ),
                   )
                   .then((value) => Navigator.of(context).pop())
               : foodNameTextController.text.trim().isEmpty
@@ -181,6 +234,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                       .read(foodItemListControllerProvider)
                       .addItem(
                           name: foodNameTextController.text.trim(),
+                          body: bodyTextController.text.trim(),
                           imageUrl: _image != null
                               ? imageUrl!
                               : 'https://i.imgur.com/QKYJihU.png')
