@@ -5,11 +5,14 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foodcast/controller/food_list_controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'recipe/food_info_page.dart';
+
 class TodayPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.of(context).size.height;
     final foods = useProvider(foodItemListControllerProvider.state);
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
 
     return Expanded(
       child: Padding(
@@ -25,29 +28,63 @@ class TodayPage extends HookWidget {
               Text("Today's\nFood",
                   style: Theme.of(context).textTheme.headline4),
               SizedBox(
-                height: (height * 0.5) / 1.5,
+                height: 24,
               ),
-              Center(
-                child: foods.when(
-                    loading: () => const CircularProgressIndicator(),
-                    error: (err, stack) => Text('Error: $err'),
-                    data: (foods) {
-                      return foods.isEmpty
-                          ? Text('No foods have been added yet!')
-                          : Text(
-                              foods[Random().nextInt(foods.length)]
-                                  .foodName
-                                  .toString(),
-                            );
-                    }),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-              IconButton(
-                icon: Icon(Icons.shuffle),
-                onPressed: () {},
-              ),
+              foods.when(
+                  loading: () => const CircularProgressIndicator(),
+                  error: (err, stack) => Text('Error: $err'),
+                  data: (foods) {
+                    int randomItem = Random().nextInt(foods.length);
+                    return foods.isEmpty
+                        ? Text('No foods have been added yet!')
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(foods[randomItem].foodName.toString(),
+                                  style: Theme.of(context).textTheme.headline5),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FoodInfoPage(
+                                        food: foods[randomItem],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: height / 1.5,
+                                  width: width / .3,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      foods[randomItem].imageUrl.toString(),
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: Icon(Icons.shuffle),
+                                    onPressed: () {},
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.check),
+                                    onPressed: () {},
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                  }),
             ],
           ),
         ),

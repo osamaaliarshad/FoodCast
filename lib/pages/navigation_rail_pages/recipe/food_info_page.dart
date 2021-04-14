@@ -134,38 +134,53 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 10,
-                              blurRadius: 10,
-                              color: Colors.grey)
-                        ], shape: BoxShape.circle, color: sidebarColor),
-                        child: Center(child: Text('Calories:')),
-                      ),
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                            boxShadow: [BoxShadow()],
-                            shape: BoxShape.circle,
-                            color: sidebarColor),
-                        child: Center(child: Text('Last Made:')),
+                      Column(
+                        children: [
+                          Text('Last Made'),
+                          SizedBox(height: 10),
+                          Card(
+                            semanticContainer: false,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: sidebarColor,
+                              ),
+                              child: Text(
+                                'Nov 20 2021',
+                                style: TextStyle(fontSize: 15),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ],
               ),
+              SizedBox(
+                height: 20,
+              ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(bottom: 4, left: 8),
+                child: Text(
+                  'Recipe ',
+                  style: TextStyle(fontSize: 30),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, top: 4, right: 16),
                 child: TextFormField(
                   controller: bodyTextController,
                   maxLines: null,
                   style: _textTheme.bodyText2,
                   decoration: InputDecoration(
-                      border: InputBorder.none, hintText: 'Recipe Info Here'),
+                      border: InputBorder.none,
+                      hintText: 'Add recipe info here'),
                 ),
               )
             ]),

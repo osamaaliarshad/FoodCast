@@ -12,6 +12,7 @@ abstract class FoodItem implements _$FoodItem {
   const factory FoodItem({
     String? id,
     String? body,
+    DateTime? lastMade,
     required String foodName,
     @Default('https://i.imgur.com/QKYJihU.png') String imageUrl,
   }) = _FoodItem;
