@@ -16,7 +16,7 @@ class TodayPage extends HookWidget {
 
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
         child: MediaQuery.removePadding(
           removeTop: true,
           context: context,

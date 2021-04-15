@@ -7,6 +7,7 @@ import 'package:foodcast/controller/food_list_controller.dart';
 import 'package:foodcast/models/food_item_model.dart';
 import 'package:foodcast/widgets/constants.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class FoodInfoPage extends StatefulWidget {
   final FoodItem food;
@@ -21,6 +22,16 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   File? _image;
   final picker = ImagePicker();
   String? imageUrl;
+  DateTime? selectedDate;
+  final DateFormat dateFormat = DateFormat('MMM dd yyy');
+
+  initState() {
+    if (widget.food.lastMade != null) {
+      selectedDate = widget.food.lastMade!;
+    }
+
+    super.initState();
+  }
 
   Future getImage() async {
     try {
@@ -138,9 +149,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                         children: [
                           Text('Last Made'),
                           SizedBox(height: 10),
-                          Card(
-                            semanticContainer: false,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                          GestureDetector(
                             child: Container(
                               alignment: Alignment.center,
                               width: 80,
@@ -150,11 +159,33 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                                 color: sidebarColor,
                               ),
                               child: Text(
-                                'Nov 20 2021',
+                                (selectedDate == null
+                                    ? 'N/A'
+                                    : dateFormat.format(selectedDate!)),
                                 style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center,
                               ),
                             ),
+                            onTap: () async {
+                              selectedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(2021),
+                                lastDate: DateTime(2100),
+                                builder: (BuildContext context, Widget? child) {
+                                  return Theme(
+                                    data: ThemeData.light().copyWith(
+                                      colorScheme: ColorScheme.light(
+                                        primary: sidebarColor,
+                                      ),
+                                    ),
+                                    child: child!,
+                                  );
+                                },
+                              );
+                              setState(() {});
+                              print(selectedDate);
+                            },
                           ),
                         ],
                       ),
@@ -223,16 +254,16 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                     .read(foodItemListControllerProvider)
                     .updateItem(
                       updatedItem: widget.food.copyWith(
-                        foodName: foodNameTextController.text.isEmpty
-                            ? widget.food.foodName.toString()
-                            : foodNameTextController.text.trim(),
-                        imageUrl: _image != null
-                            ? imageUrl!
-                            : widget.food.imageUrl.toString(),
-                        body: bodyTextController.text.isEmpty
-                            ? ''
-                            : bodyTextController.text.trim(),
-                      ),
+                          foodName: foodNameTextController.text.isEmpty
+                              ? widget.food.foodName.toString()
+                              : foodNameTextController.text.trim(),
+                          imageUrl: _image != null
+                              ? imageUrl!
+                              : widget.food.imageUrl.toString(),
+                          body: bodyTextController.text.isEmpty
+                              ? ''
+                              : bodyTextController.text.trim(),
+                          lastMade: selectedDate),
                     )
                     .then((value) => Navigator.of(context).pop())
                 : foodNameTextController.text.trim().isEmpty
