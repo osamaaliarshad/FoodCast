@@ -70,3 +70,69 @@ Future showRecipePagePopupMenu(BuildContext context, FoodItem foodItem,
     }
   });
 }
+
+Future<dynamic> showCalendarPageMenu(
+    BuildContext context, double left, double top, FoodItem foodItem) {
+  return showMenu(
+    context: context,
+    position: RelativeRect.fromLTRB(left, top, 100000, 0),
+    items: [
+      PopupMenuItem(
+        value: 'Remove',
+        child: Text("Remove from this day"),
+      ),
+    ],
+    elevation: 8.0,
+  ).then((value) {
+    switch (value) {
+      case 'Remove':
+        showDialog(
+            context: context,
+            builder: (context) => SimpleDialog(
+                  contentPadding: EdgeInsets.all(18),
+                  children: [
+                    Text('Are you sure you want to remove from this date?'),
+                    Text(
+                      foodItem.foodName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            context
+                                .read(foodItemListControllerProvider)
+                                .updateItem(
+                                    updatedItem:
+                                        foodItem.copyWith(lastMade: null))
+                                .then(
+                                  (value) => Navigator.of(context).pop(),
+                                );
+                          },
+                          child: Text(
+                            'Remove',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red.shade200,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text('Cancel'))
+                      ],
+                    )
+                  ],
+                ));
+        break;
+    }
+  });
+}

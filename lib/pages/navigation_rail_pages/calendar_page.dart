@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:foodcast/models/food_item_model.dart';
 import 'package:foodcast/widgets/constants.dart';
+import 'package:foodcast/widgets/popup_menus.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'recipe/food_info_page.dart';
 import 'recipe/recipe_page.dart';
@@ -122,6 +124,13 @@ class _CalendarPageState extends State<CalendarPage> {
                                         ),
                                       ),
                                     );
+                                  },
+                                  onLongPressStart:
+                                      (LongPressStartDetails details) async {
+                                    double left = details.globalPosition.dx;
+                                    double top = details.globalPosition.dy;
+                                    await showCalendarPageMenu(
+                                        context, left, top, foodItem);
                                   },
                                 )
                               : SizedBox.shrink();

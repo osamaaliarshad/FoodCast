@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodcast/pages/navigation_rail_pages/recipe/food_info_page.dart';
 import 'package:foodcast/widgets/constants.dart';
-import 'package:foodcast/widgets/recipe_popup_menu.dart';
+import 'package:foodcast/widgets/popup_menus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foodcast/controller/food_list_controller.dart';
