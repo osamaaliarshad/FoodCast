@@ -78,7 +78,70 @@ class TodayPage extends HookWidget {
                                   ),
                                   IconButton(
                                     icon: Icon(Icons.check),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => SimpleDialog(
+                                          contentPadding: EdgeInsets.all(18),
+                                          children: [
+                                            Text(
+                                                "Add this food to today's food?"),
+                                            Text(
+                                              foods[randomItem].foodName,
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontStyle: FontStyle.italic,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 20,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () {
+                                                    context
+                                                        .read(
+                                                            foodItemListControllerProvider)
+                                                        .updateItem(
+                                                          updatedItem: foods[
+                                                                  randomItem]
+                                                              .copyWith(
+                                                                  lastMade:
+                                                                      DateTime
+                                                                          .now()),
+                                                        )
+                                                        .then((value) =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop());
+                                                    ;
+                                                  },
+                                                  child: Text(
+                                                    'Yes',
+                                                    style: TextStyle(
+                                                        color: Colors.black),
+                                                  ),
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary:
+                                                        Colors.green.shade100,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 20),
+                                                TextButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child: Text('Cancel'))
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ],
                               ),
