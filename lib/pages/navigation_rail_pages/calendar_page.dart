@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:foodcast/widgets/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'recipe/food_info_page.dart';
+import 'recipe/recipe_page.dart';
+import 'dart:ui';
+import 'package:foodcast/pages/navigation_rail_pages/recipe/food_info_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:foodcast/controller/food_list_controller.dart';
 
 class CalendarPage extends StatefulWidget {
   @override
@@ -8,8 +14,12 @@ class CalendarPage extends StatefulWidget {
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
   @override
   void initState() {
+    _selectedDay = DateTime.now();
     super.initState();
   }
 
@@ -34,9 +44,27 @@ class _CalendarPageState extends State<CalendarPage> {
               ),
               Text('Calendar', style: Theme.of(context).textTheme.headline4),
               SizedBox(
-                height: (height * 0.5) / 5,
+                height: (height * 0.2) / 5,
               ),
               TableCalendar(
+                  onFormatChanged: (format) {
+                    if (_calendarFormat != format) {
+                      // Call `setState()` when updating calendar format
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
+                  },
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay =
+                          focusedDay; // update `_focusedDay` here as well
+                    });
+                  },
                   calendarStyle: CalendarStyle(
                     todayDecoration: BoxDecoration(
                       color: sidebarColor,
@@ -47,13 +75,62 @@ class _CalendarPageState extends State<CalendarPage> {
                       fontSize: 16.0,
                     ), //
                   ),
-                  focusedDay: DateTime.now(),
+                  focusedDay: _focusedDay,
                   firstDay: DateTime.utc(2021, 1, 28),
                   lastDay: DateTime.utc(2030, 3, 14)),
               SizedBox(
-                height: 50,
+                height: 15,
               ),
-              Center(child: Text('Food that was made on this day'))
+              Center(
+                  child: Text(
+                'Food made on this day:',
+                style: TextStyle(color: Colors.grey, fontSize: 15),
+              )),
+              SizedBox(
+                height: 15,
+              ),
+              Consumer(builder: (context, watch, child) {
+                var foods = watch(foodItemListControllerProvider.state);
+                return foods.when(
+                  loading: () => const CircularProgressIndicator(),
+                  error: (err, stack) => Text('Error: $err'),
+                  data: (foods) => (SizedBox(
+                    height: 250,
+                    child: ListView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      children: List.generate(
+                        foods.length,
+                        (index) {
+                          final foodItem = foods[index];
+                          return (foods[index].lastMade != null &&
+                                  foods[index]
+                                          .lastMade
+                                          .toString()
+                                          .substring(0, 10) ==
+                                      _selectedDay.toString().substring(0, 10))
+                              ? GestureDetector(
+                                  child: Container(
+                                      height: 100,
+                                      child:
+                                          CreateStyleCard(foodItem: foodItem)),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FoodInfoPage(
+                                          food: foodItem,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                )
+                              : SizedBox.shrink();
+                        },
+                      ),
+                    ),
+                  )),
+                );
+              })
             ],
           ),
         ),

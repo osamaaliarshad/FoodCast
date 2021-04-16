@@ -158,12 +158,15 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                                 shape: BoxShape.circle,
                                 color: sidebarColor,
                               ),
-                              child: Text(
-                                (selectedDate == null
-                                    ? 'N/A'
-                                    : dateFormat.format(selectedDate!)),
-                                style: TextStyle(fontSize: 15),
-                                textAlign: TextAlign.center,
+                              child: Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Text(
+                                  (selectedDate == null
+                                      ? 'N/A'
+                                      : dateFormat.format(selectedDate!)),
+                                  style: TextStyle(fontSize: 15),
+                                  textAlign: TextAlign.center,
+                                ),
                               ),
                             ),
                             onTap: () async {
