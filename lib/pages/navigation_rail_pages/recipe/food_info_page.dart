@@ -33,9 +33,31 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
     super.initState();
   }
 
-  Future getImage() async {
+  Future getImageGallery() async {
     try {
-      final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await picker.getImage(source: ImageSource.gallery, imageQuality: 30);
+
+      setState(() {
+        if (pickedFile != null) {
+          _image = File(pickedFile.path);
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('No image selected'),
+            ),
+          );
+        }
+      });
+    } on Exception catch (e) {
+      print(e);
+    }
+  }
+
+  Future getImageCamera() async {
+    try {
+      final pickedFile =
+          await picker.getImage(source: ImageSource.gallery, imageQuality: 30);
 
       setState(() {
         if (pickedFile != null) {
@@ -69,7 +91,9 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
         slivers: [
           SliverAppBar(
             iconTheme: IconThemeData(color: Colors.white),
-            actions: [IconButton(icon: Icon(Icons.image), onPressed: getImage)],
+            actions: [
+              IconButton(icon: Icon(Icons.image), onPressed: getImageGallery)
+            ],
             actionsIconTheme: IconThemeData(color: Colors.white),
             expandedHeight: 250,
             stretch: true,

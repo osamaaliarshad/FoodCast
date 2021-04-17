@@ -79,7 +79,7 @@ Future<dynamic> showCalendarPageMenu(
     items: [
       PopupMenuItem(
         value: 'Remove',
-        child: Text("Remove from this day"),
+        child: Text("Remove"),
       ),
     ],
     elevation: 8.0,
@@ -91,14 +91,8 @@ Future<dynamic> showCalendarPageMenu(
             builder: (context) => SimpleDialog(
                   contentPadding: EdgeInsets.all(18),
                   children: [
-                    Text('Are you sure you want to remove from this date?'),
                     Text(
-                      foodItem.foodName,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
+                        'Are you sure you want to remove ${foodItem.foodName} from ${foodItem.lastMade.toString().substring(5, 10)}?'),
                     SizedBox(
                       height: 20,
                     ),
