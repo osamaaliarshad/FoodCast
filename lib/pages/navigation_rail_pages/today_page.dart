@@ -46,7 +46,7 @@ class _TodayPageState extends State<TodayPage>
               Consumer(builder: (context, watch, child) {
                 var foods = watch(foodItemListControllerProvider.state);
                 return foods.when(
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => Center(child: CircularProgressIndicator()),
                     error: (err, stack) => Text('Error: $err'),
                     data: (foods) {
                       int randomItem = randomizer(foods);

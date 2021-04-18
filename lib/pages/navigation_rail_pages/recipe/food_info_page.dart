@@ -37,31 +37,10 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
     super.initState();
   }
 
-  Future getImageGallery() async {
+  Future getImage(ImageSource source) async {
     try {
       final pickedFile =
-          await picker.getImage(source: ImageSource.gallery, imageQuality: 30);
-
-      setState(() {
-        if (pickedFile != null) {
-          _image = File(pickedFile.path);
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('No image selected'),
-            ),
-          );
-        }
-      });
-    } on Exception catch (e) {
-      print(e);
-    }
-  }
-
-  Future getImageCamera() async {
-    try {
-      final pickedFile =
-          await picker.getImage(source: ImageSource.camera, imageQuality: 30);
+          await picker.getImage(source: source, imageQuality: 30);
 
       setState(() {
         if (pickedFile != null) {
@@ -110,7 +89,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                                     Icon(Icons.camera),
                                     TextButton(
                                       onPressed: () {
-                                        getImageCamera().then(
+                                        getImage(ImageSource.camera).then(
                                           (value) =>
                                               Navigator.of(context).pop(),
                                         );
@@ -128,7 +107,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                                     Icon(Icons.image),
                                     TextButton(
                                       onPressed: () {
-                                        getImageGallery().then(
+                                        getImage(ImageSource.gallery).then(
                                           (value) =>
                                               Navigator.of(context).pop(),
                                         );
