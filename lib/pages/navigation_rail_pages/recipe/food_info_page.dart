@@ -24,10 +24,14 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   String? imageUrl;
   DateTime? selectedDate;
   final DateFormat dateFormat = DateFormat('MMM dd yyy');
+  String dropDownValue = 'Normal';
 
   initState() {
     if (widget.food.lastMade != null) {
       selectedDate = widget.food.lastMade!;
+    }
+    if (widget.food.frequency != 'Normal') {
+      dropDownValue = widget.food.frequency.toString();
     }
 
     super.initState();
@@ -57,7 +61,7 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
   Future getImageCamera() async {
     try {
       final pickedFile =
-          await picker.getImage(source: ImageSource.gallery, imageQuality: 30);
+          await picker.getImage(source: ImageSource.camera, imageQuality: 30);
 
       setState(() {
         if (pickedFile != null) {
@@ -92,7 +96,53 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
           SliverAppBar(
             iconTheme: IconThemeData(color: Colors.white),
             actions: [
-              IconButton(icon: Icon(Icons.image), onPressed: getImageGallery)
+              IconButton(
+                  icon: Icon(Icons.image),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) => SimpleDialog(
+                              contentPadding: EdgeInsets.all(10),
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.camera),
+                                    TextButton(
+                                      onPressed: () {
+                                        getImageCamera().then(
+                                          (value) =>
+                                              Navigator.of(context).pop(),
+                                        );
+                                      },
+                                      child: Text(
+                                        'Camera',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.image),
+                                    TextButton(
+                                      onPressed: () {
+                                        getImageGallery().then(
+                                          (value) =>
+                                              Navigator.of(context).pop(),
+                                        );
+                                      },
+                                      child: Text(
+                                        'Gallery',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ));
+                  })
             ],
             actionsIconTheme: IconThemeData(color: Colors.white),
             expandedHeight: 250,
@@ -224,10 +274,35 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 4, left: 8),
-                child: Text(
-                  'Recipe ',
-                  style: TextStyle(fontSize: 30),
+                padding: const EdgeInsets.only(bottom: 4, left: 8, right: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Recipe ',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Column(
+                      children: [
+                        Text('Frequency:'),
+                        DropdownButton(
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              dropDownValue = newValue!;
+                            });
+                          },
+                          value: dropDownValue,
+                          items: ['Often', 'Normal', 'Rare']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
               Padding(
@@ -290,7 +365,8 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                           body: bodyTextController.text.isEmpty
                               ? ''
                               : bodyTextController.text.trim(),
-                          lastMade: selectedDate),
+                          lastMade: selectedDate,
+                          frequency: dropDownValue),
                     )
                     .then((value) => Navigator.of(context).pop())
                 : foodNameTextController.text.trim().isEmpty
@@ -306,7 +382,8 @@ class _FoodInfoPageState extends State<FoodInfoPage> {
                             body: bodyTextController.text.trim(),
                             imageUrl: _image != null
                                 ? imageUrl!
-                                : 'https://i.imgur.com/QKYJihU.png')
+                                : 'https://i.imgur.com/QKYJihU.png',
+                            frequency: dropDownValue)
                         .then(
                           (value) => Navigator.of(context).pop(),
                         ));

@@ -21,13 +21,15 @@ class _$FoodItemTearOff {
       String? body,
       DateTime? lastMade,
       required String foodName,
-      String imageUrl = 'https://i.imgur.com/QKYJihU.png'}) {
+      String imageUrl = 'https://i.imgur.com/QKYJihU.png',
+      String frequency = 'Normal'}) {
     return _FoodItem(
       id: id,
       body: body,
       lastMade: lastMade,
       foodName: foodName,
       imageUrl: imageUrl,
+      frequency: frequency,
     );
   }
 
@@ -46,6 +48,7 @@ mixin _$FoodItem {
   DateTime? get lastMade;
   String get foodName;
   String get imageUrl;
+  String get frequency;
 
   Map<String, dynamic> toJson();
   @JsonKey(ignore: true)
@@ -61,7 +64,8 @@ abstract class $FoodItemCopyWith<$Res> {
       String? body,
       DateTime? lastMade,
       String foodName,
-      String imageUrl});
+      String imageUrl,
+      String frequency});
 }
 
 /// @nodoc
@@ -79,6 +83,7 @@ class _$FoodItemCopyWithImpl<$Res> implements $FoodItemCopyWith<$Res> {
     Object? lastMade = freezed,
     Object? foodName = freezed,
     Object? imageUrl = freezed,
+    Object? frequency = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String?,
@@ -86,6 +91,7 @@ class _$FoodItemCopyWithImpl<$Res> implements $FoodItemCopyWith<$Res> {
       lastMade: lastMade == freezed ? _value.lastMade : lastMade as DateTime?,
       foodName: foodName == freezed ? _value.foodName : foodName as String,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
+      frequency: frequency == freezed ? _value.frequency : frequency as String,
     ));
   }
 }
@@ -100,7 +106,8 @@ abstract class _$FoodItemCopyWith<$Res> implements $FoodItemCopyWith<$Res> {
       String? body,
       DateTime? lastMade,
       String foodName,
-      String imageUrl});
+      String imageUrl,
+      String frequency});
 }
 
 /// @nodoc
@@ -119,6 +126,7 @@ class __$FoodItemCopyWithImpl<$Res> extends _$FoodItemCopyWithImpl<$Res>
     Object? lastMade = freezed,
     Object? foodName = freezed,
     Object? imageUrl = freezed,
+    Object? frequency = freezed,
   }) {
     return _then(_FoodItem(
       id: id == freezed ? _value.id : id as String?,
@@ -126,6 +134,7 @@ class __$FoodItemCopyWithImpl<$Res> extends _$FoodItemCopyWithImpl<$Res>
       lastMade: lastMade == freezed ? _value.lastMade : lastMade as DateTime?,
       foodName: foodName == freezed ? _value.foodName : foodName as String,
       imageUrl: imageUrl == freezed ? _value.imageUrl : imageUrl as String,
+      frequency: frequency == freezed ? _value.frequency : frequency as String,
     ));
   }
 }
@@ -139,7 +148,8 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
       this.body,
       this.lastMade,
       required this.foodName,
-      this.imageUrl = 'https://i.imgur.com/QKYJihU.png'})
+      this.imageUrl = 'https://i.imgur.com/QKYJihU.png',
+      this.frequency = 'Normal'})
       : super._();
 
   factory _$_FoodItem.fromJson(Map<String, dynamic> json) =>
@@ -156,10 +166,13 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
   @JsonKey(defaultValue: 'https://i.imgur.com/QKYJihU.png')
   @override
   final String imageUrl;
+  @JsonKey(defaultValue: 'Normal')
+  @override
+  final String frequency;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'FoodItem(id: $id, body: $body, lastMade: $lastMade, foodName: $foodName, imageUrl: $imageUrl)';
+    return 'FoodItem(id: $id, body: $body, lastMade: $lastMade, foodName: $foodName, imageUrl: $imageUrl, frequency: $frequency)';
   }
 
   @override
@@ -171,7 +184,8 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('body', body))
       ..add(DiagnosticsProperty('lastMade', lastMade))
       ..add(DiagnosticsProperty('foodName', foodName))
-      ..add(DiagnosticsProperty('imageUrl', imageUrl));
+      ..add(DiagnosticsProperty('imageUrl', imageUrl))
+      ..add(DiagnosticsProperty('frequency', frequency));
   }
 
   @override
@@ -190,7 +204,10 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
                     .equals(other.foodName, foodName)) &&
             (identical(other.imageUrl, imageUrl) ||
                 const DeepCollectionEquality()
-                    .equals(other.imageUrl, imageUrl)));
+                    .equals(other.imageUrl, imageUrl)) &&
+            (identical(other.frequency, frequency) ||
+                const DeepCollectionEquality()
+                    .equals(other.frequency, frequency)));
   }
 
   @override
@@ -200,7 +217,8 @@ class _$_FoodItem extends _FoodItem with DiagnosticableTreeMixin {
       const DeepCollectionEquality().hash(body) ^
       const DeepCollectionEquality().hash(lastMade) ^
       const DeepCollectionEquality().hash(foodName) ^
-      const DeepCollectionEquality().hash(imageUrl);
+      const DeepCollectionEquality().hash(imageUrl) ^
+      const DeepCollectionEquality().hash(frequency);
 
   @JsonKey(ignore: true)
   @override
@@ -220,7 +238,8 @@ abstract class _FoodItem extends FoodItem {
       String? body,
       DateTime? lastMade,
       required String foodName,
-      String imageUrl}) = _$_FoodItem;
+      String imageUrl,
+      String frequency}) = _$_FoodItem;
 
   factory _FoodItem.fromJson(Map<String, dynamic> json) = _$_FoodItem.fromJson;
 
@@ -234,6 +253,8 @@ abstract class _FoodItem extends FoodItem {
   String get foodName;
   @override
   String get imageUrl;
+  @override
+  String get frequency;
   @override
   @JsonKey(ignore: true)
   _$FoodItemCopyWith<_FoodItem> get copyWith;

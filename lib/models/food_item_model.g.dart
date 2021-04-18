@@ -15,6 +15,7 @@ _$_FoodItem _$_$_FoodItemFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['lastMade'] as String),
     foodName: json['foodName'] as String,
     imageUrl: json['imageUrl'] as String? ?? 'https://i.imgur.com/QKYJihU.png',
+    frequency: json['frequency'] as String? ?? 'Normal',
   );
 }
 
@@ -25,4 +26,5 @@ Map<String, dynamic> _$_$_FoodItemToJson(_$_FoodItem instance) =>
       'lastMade': instance.lastMade?.toIso8601String(),
       'foodName': instance.foodName,
       'imageUrl': instance.imageUrl,
+      'frequency': instance.frequency,
     };

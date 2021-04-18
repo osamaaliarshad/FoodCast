@@ -15,6 +15,7 @@ abstract class FoodItem implements _$FoodItem {
     DateTime? lastMade,
     required String foodName,
     @Default('https://i.imgur.com/QKYJihU.png') String imageUrl,
+    @Default('Normal') String frequency,
   }) = _FoodItem;
 
   // item.empty returns an item with a name and default image

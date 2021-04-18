@@ -79,7 +79,7 @@ class _TodayPageState extends State<TodayPage>
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
                                         foods[randomItem].imageUrl.toString(),
-                                        fit: BoxFit.fitHeight,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),

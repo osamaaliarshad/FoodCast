@@ -49,9 +49,13 @@ class FoodItemListController extends StateNotifier<AsyncValue<List<FoodItem>>> {
   }
 
   Future<void> addItem(
-      {required String name, required String imageUrl, String? body}) async {
+      {required String name,
+      required String imageUrl,
+      String? body,
+      required String frequency}) async {
     try {
-      final foodItem = FoodItem(foodName: name, imageUrl: imageUrl, body: body);
+      final foodItem = FoodItem(
+          foodName: name, imageUrl: imageUrl, body: body, frequency: frequency);
       final foodItemId = await _read(foodItemRepositoryProvider)
           .createItem(userId: _userId!, foodItem: foodItem);
       state.whenData((items) => state =
