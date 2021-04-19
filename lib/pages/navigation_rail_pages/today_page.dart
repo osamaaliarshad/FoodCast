@@ -12,8 +12,11 @@ class TodayPage extends StatefulWidget {
 
 class _TodayPageState extends State<TodayPage>
     with AutomaticKeepAliveClientMixin<TodayPage> {
+  int? randomItem;
+  int randomizer(List<FoodItem> foods) => Random().nextInt(foods.length);
   @override
   void initState() {
+    randomItem = 8;
     super.initState();
   }
 
@@ -24,7 +27,7 @@ class _TodayPageState extends State<TodayPage>
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    int randomizer(List<FoodItem> foods) => Random().nextInt(foods.length);
+
     super.build(context);
 
     return Expanded(
@@ -43,19 +46,26 @@ class _TodayPageState extends State<TodayPage>
               SizedBox(
                 height: 24,
               ),
-              Consumer(builder: (context, watch, child) {
-                var foods = watch(foodItemListControllerProvider.state);
-                return foods.when(
+              Consumer(
+                builder: (context, watch, child) {
+                  var foods = watch(foodItemListControllerProvider.state);
+                  return foods.when(
                     loading: () => Center(child: CircularProgressIndicator()),
                     error: (err, stack) => Text('Error: $err'),
                     data: (foods) {
-                      int randomItem = randomizer(foods);
+                      // var arr = List.filled(foods.length, 0);
+                      // for (int i = 0; i < foods.length; i++) {
+                      //   // if a food's last made date exceeds its frequency
+                      //   // value, or if the last made
+                      //   // date is null add it to the list of recommended food
+                      //   // for today
+                      // }
                       return foods.isEmpty
                           ? Text('No foods have been added yet!')
                           : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(foods[randomItem].foodName.toString(),
+                                Text(foods[randomItem!].foodName.toString(),
                                     style:
                                         Theme.of(context).textTheme.headline5),
                                 SizedBox(
@@ -67,7 +77,7 @@ class _TodayPageState extends State<TodayPage>
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => FoodInfoPage(
-                                          food: foods[randomItem],
+                                          food: foods[randomItem!],
                                         ),
                                       ),
                                     );
@@ -78,7 +88,7 @@ class _TodayPageState extends State<TodayPage>
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
                                       child: Image.network(
-                                        foods[randomItem].imageUrl.toString(),
+                                        foods[randomItem!].imageUrl.toString(),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -91,7 +101,9 @@ class _TodayPageState extends State<TodayPage>
                                     IconButton(
                                       icon: Icon(Icons.shuffle),
                                       onPressed: () {
-                                        setState(() {});
+                                        setState(() {
+                                          randomItem = randomizer(foods);
+                                        });
                                       },
                                     ),
                                     IconButton(
@@ -105,7 +117,7 @@ class _TodayPageState extends State<TodayPage>
                                               Text(
                                                   "Add this food to today's food?"),
                                               Text(
-                                                foods[randomItem].foodName,
+                                                foods[randomItem!].foodName,
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontStyle: FontStyle.italic,
@@ -125,16 +137,18 @@ class _TodayPageState extends State<TodayPage>
                                                               foodItemListControllerProvider)
                                                           .updateItem(
                                                             updatedItem: foods[
-                                                                    randomItem]
+                                                                    randomItem!]
                                                                 .copyWith(
-                                                                    lastMade:
-                                                                        DateTime
-                                                                            .now()),
+                                                              lastMade: DateTime
+                                                                  .now(),
+                                                            ),
                                                           )
-                                                          .then((value) =>
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop());
+                                                          .then(
+                                                            (value) =>
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop(),
+                                                          );
                                                     },
                                                     child: Text(
                                                       'Yes',
@@ -149,10 +163,11 @@ class _TodayPageState extends State<TodayPage>
                                                   ),
                                                   SizedBox(width: 20),
                                                   TextButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(),
-                                                      child: Text('Cancel'))
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child: Text('Cancel'),
+                                                  )
                                                 ],
                                               )
                                             ],
@@ -164,8 +179,10 @@ class _TodayPageState extends State<TodayPage>
                                 ),
                               ],
                             );
-                    });
-              }),
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -173,3 +190,11 @@ class _TodayPageState extends State<TodayPage>
     );
   }
 }
+
+// class RecommendedFood {
+//   // if a food's last made date exceeds its frequency value, or if the last made
+//   // date is null add it to the list of recommended food for today
+//   final foodProvider = Provider(
+//     (ref) async => await ref.watch(foodItemListControllerProvider.state),
+//   );
+// }

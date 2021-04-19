@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:foodcast/controller/food_list_controller.dart';
 import 'package:foodcast/models/food_item_model.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 enum Action { Edit, Delete }
 
@@ -32,46 +33,46 @@ class RecipePage extends HookWidget {
             color: activeColor,
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            foods.when(
-              loading: () => const CircularProgressIndicator(),
-              error: (err, stack) => Text('Error: $err'),
-              data: (foods) => foods.isEmpty
-                  ? Center(child: Text('Tap + to add a food item.'))
-                  : (Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: List.generate(
-                          foods.length,
-                          (index) {
-                            final foodItem = foods[index];
-                            return GestureDetector(
-                              child: CreateStyleCard(foodItem: foodItem),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FoodInfoPage(
-                                      food: foodItem,
-                                    ),
+        body: FloatingSearchBar(
+          builder: (context, transition) {
+            return Text('sd');
+          },
+          body: foods.when(
+            loading: () => const CircularProgressIndicator(),
+            error: (err, stack) => Text('Error: $err'),
+            data: (foods) => foods.isEmpty
+                ? Center(child: Text('Tap + to add a food item.'))
+                : (Expanded(
+                    child: GridView.count(
+                      crossAxisCount: 2,
+                      children: List.generate(
+                        foods.length,
+                        (index) {
+                          final foodItem = foods[index];
+                          return GestureDetector(
+                            child: CreateStyleCard(foodItem: foodItem),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FoodInfoPage(
+                                    food: foodItem,
                                   ),
-                                );
-                              },
-                              onLongPressStart:
-                                  (LongPressStartDetails details) async {
-                                showRecipePagePopupMenu(
-                                    context, foodItem, details);
-                                //show popup menu to delete item
-                              },
-                            );
-                          },
-                        ),
+                                ),
+                              );
+                            },
+                            onLongPressStart:
+                                (LongPressStartDetails details) async {
+                              showRecipePagePopupMenu(
+                                  context, foodItem, details);
+                              //show popup menu to delete item
+                            },
+                          );
+                        },
                       ),
-                    )),
-            ),
-          ],
+                    ),
+                  )),
+          ),
         ),
       ),
     );
