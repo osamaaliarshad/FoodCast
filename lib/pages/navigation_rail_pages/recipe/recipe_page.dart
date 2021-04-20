@@ -37,41 +37,51 @@ class RecipePage extends HookWidget {
           builder: (context, transition) {
             return Text('sd');
           },
-          body: foods.when(
-            loading: () => const CircularProgressIndicator(),
-            error: (err, stack) => Text('Error: $err'),
-            data: (foods) => foods.isEmpty
-                ? Center(child: Text('Tap + to add a food item.'))
-                : (Expanded(
-                    child: GridView.count(
-                      crossAxisCount: 2,
-                      children: List.generate(
-                        foods.length,
-                        (index) {
-                          final foodItem = foods[index];
-                          return GestureDetector(
-                            child: CreateStyleCard(foodItem: foodItem),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FoodInfoPage(
-                                    food: foodItem,
-                                  ),
-                                ),
-                              );
-                            },
-                            onLongPressStart:
-                                (LongPressStartDetails details) async {
-                              showRecipePagePopupMenu(
-                                  context, foodItem, details);
-                              //show popup menu to delete item
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  )),
+          body: FloatingSearchBarScrollNotifier(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  height: 55,
+                ),
+                Expanded(
+                  child: foods.when(
+                    loading: () => const CircularProgressIndicator(),
+                    error: (err, stack) => Text('Error: $err'),
+                    data: (foods) => foods.isEmpty
+                        ? Center(child: Text('Tap + to add a food item.'))
+                        : (GridView.count(
+                            crossAxisCount: 2,
+                            children: List.generate(
+                              foods.length,
+                              (index) {
+                                final foodItem = foods[index];
+                                return GestureDetector(
+                                  child: CreateStyleCard(foodItem: foodItem),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FoodInfoPage(
+                                          food: foodItem,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  onLongPressStart:
+                                      (LongPressStartDetails details) async {
+                                    showRecipePagePopupMenu(
+                                        context, foodItem, details);
+                                    //show popup menu to delete item
+                                  },
+                                );
+                              },
+                            ),
+                          )),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

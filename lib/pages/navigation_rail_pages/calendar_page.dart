@@ -10,18 +10,30 @@ import 'package:foodcast/pages/navigation_rail_pages/recipe/food_info_page.dart'
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:foodcast/controller/food_list_controller.dart';
 
+class Event {
+  final String title;
+
+  const Event(this.title);
+
+  @override
+  String toString() => title;
+}
+
 class CalendarPage extends StatefulWidget {
   @override
   _CalendarPageState createState() => _CalendarPageState();
 }
 
 class _CalendarPageState extends State<CalendarPage> {
+  late final ValueNotifier<List<Event>> _selectedEvents;
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
+  //
   @override
   void initState() {
     _selectedDay = DateTime.now();
+    // _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
     super.initState();
   }
 
@@ -29,6 +41,11 @@ class _CalendarPageState extends State<CalendarPage> {
   void dispose() {
     super.dispose();
   }
+
+  //   List<Event> _getEventsForDay(DateTime day) {
+  //   // Implementation example
+  //   return kEvents[day] ?? [];
+  // }
 
   @override
   Widget build(BuildContext context) {
