@@ -188,7 +188,7 @@ class RecommendedFood {
   // if a food's last made date exceeds its frequency value, or if the last made
   // date is null add it to the list of recommended food for today
   final foodProvider = Provider(
-    (ref) async => await ref.watch(foodItemListControllerProvider.state),
+    (context) async => await context.read(foodItemListControllerProvider.state),
   );
 
   Future<void> retrieveFoodNames() async {
@@ -199,5 +199,6 @@ class RecommendedFood {
     //   // date is null add it to the list of recommended food
     //   // for today
     // }
+    print(foodProvider);
   }
 }
