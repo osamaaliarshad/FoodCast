@@ -4,7 +4,6 @@ A food recommendation and cookbook app made in Flutter.
 
 ## App Demo
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+![AppDemo](https://media3.giphy.com/media/aEyTPiI4YKuBQ0peYR/giphy.gif)
 
 
