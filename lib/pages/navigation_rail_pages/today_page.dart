@@ -54,13 +54,6 @@ class _TodayPageState extends State<TodayPage>
                     loading: () => Center(child: CircularProgressIndicator()),
                     error: (err, stack) => Text('Error: $err'),
                     data: (foods) {
-                      // var arr = List.filled(foods.length, 0);
-                      // for (int i = 0; i < foods.length; i++) {
-                      //   // if a food's last made date exceeds its frequency
-                      //   // value, or if the last made
-                      //   // date is null add it to the list of recommended food
-                      //   // for today
-                      // }
                       return foods.isEmpty
                           ? Container(
                               height: height,
@@ -119,70 +112,7 @@ class _TodayPageState extends State<TodayPage>
                                     IconButton(
                                       icon: Icon(Icons.check),
                                       onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) => SimpleDialog(
-                                            contentPadding: EdgeInsets.all(18),
-                                            children: [
-                                              Text(
-                                                  "Add this food to today's food?"),
-                                              Text(
-                                                foods[randomItem!].foodName,
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontStyle: FontStyle.italic,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 20,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      context
-                                                          .read(
-                                                              foodItemListControllerProvider)
-                                                          .updateItem(
-                                                            updatedItem: foods[
-                                                                    randomItem!]
-                                                                .copyWith(
-                                                              lastMade: DateTime
-                                                                  .now(),
-                                                            ),
-                                                          )
-                                                          .then(
-                                                            (value) =>
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop(),
-                                                          );
-                                                    },
-                                                    child: Text(
-                                                      'Yes',
-                                                      style: TextStyle(
-                                                          color: Colors.black),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary:
-                                                          Colors.green.shade100,
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 20),
-                                                  TextButton(
-                                                    onPressed: () =>
-                                                        Navigator.of(context)
-                                                            .pop(),
-                                                    child: Text('Cancel'),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        );
+                                        addFoodToToday(context, foods);
                                       },
                                     ),
                                   ],
@@ -199,6 +129,59 @@ class _TodayPageState extends State<TodayPage>
       ),
     );
   }
+
+  void addFoodToToday(BuildContext context, List<FoodItem> foods) {
+    showDialog(
+      context: context,
+      builder: (context) => SimpleDialog(
+        contentPadding: EdgeInsets.all(18),
+        children: [
+          Text("Add this food to today's food?"),
+          Text(
+            foods[randomItem!].foodName,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  context
+                      .read(foodItemListControllerProvider)
+                      .updateItem(
+                        updatedItem: foods[randomItem!].copyWith(
+                          lastMade: DateTime.now(),
+                        ),
+                      )
+                      .then(
+                        (value) => Navigator.of(context).pop(),
+                      );
+                },
+                child: Text(
+                  'Yes',
+                  style: TextStyle(color: Colors.black),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green.shade100,
+                ),
+              ),
+              SizedBox(width: 20),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('Cancel'),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
 }
 
 class RecommendedFood {
@@ -209,6 +192,12 @@ class RecommendedFood {
   );
 
   Future<void> retrieveFoodNames() async {
-    print(foodProvider);
+    // var arr = List.filled(foods.length, 0);
+    // for (int i = 0; i < foods.length; i++) {
+    //   // if a food's last made date exceeds its frequency
+    //   // value, or if the last made
+    //   // date is null add it to the list of recommended food
+    //   // for today
+    // }
   }
 }

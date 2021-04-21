@@ -62,7 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 Icons.search,
                 color: deactiveColor,
               ),
-              onPressed: () {}),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecipePage()),
+                );
+              }),
         ],
       ),
       destinations: [
