@@ -12,10 +12,74 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 enum Action { Edit, Delete }
 
-class RecipePage extends HookWidget {
+List<String> filterSearchTerms({
+  @required String? filter,
+}) {
+  if (filter != null && filter.isNotEmpty) {
+    // Reversed because we want the last added items to appear first in the UI
+    return _searchHistory.reversed
+        .where((term) => term.startsWith(filter))
+        .toList();
+  } else {
+    return _searchHistory.reversed.toList();
+  }
+}
+
+const historyLength = 5;
+
+// The "raw" history that we don't access from the UI
+List<String> _searchHistory = [];
+// The filtered & ordered history that's accessed from the UI
+List<String>? filteredSearchHistory;
+
+// The currently searched-for term
+String? selectedTerm;
+
+void putSearchTermFirst(String term) {
+  deleteSearchTerm(term);
+  addSearchTerm(term);
+}
+
+void deleteSearchTerm(String term) {
+  _searchHistory.removeWhere((t) => t == term);
+  filteredSearchHistory = filterSearchTerms(filter: null);
+}
+
+void addSearchTerm(String term) {
+  if (_searchHistory.contains(term)) {
+    // This method will be implemented soon
+    putSearchTermFirst(term);
+    return;
+  }
+  _searchHistory.add(term);
+  if (_searchHistory.length > historyLength) {
+    _searchHistory.removeRange(0, _searchHistory.length - historyLength);
+  }
+  // Changes in _searchHistory mean that we have to update the filteredSearchHistory
+  filteredSearchHistory = filterSearchTerms(filter: null);
+}
+
+class RecipePage extends StatefulWidget {
+  @override
+  _RecipePageState createState() => _RecipePageState();
+}
+
+FloatingSearchBarController? controller;
+
+@override
+void initState() {
+  filteredSearchHistory = filterSearchTerms(filter: null);
+  controller = FloatingSearchBarController();
+}
+
+@override
+void dispose() {
+  controller?.dispose();
+}
+
+class _RecipePageState extends State<RecipePage> {
   @override
   Widget build(BuildContext context) {
-    final foods = useProvider(foodItemListControllerProvider.state);
     return Expanded(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
@@ -34,8 +98,28 @@ class RecipePage extends HookWidget {
           ),
         ),
         body: FloatingSearchBar(
+          onSubmitted: (query) {
+            setState(() {
+              addSearchTerm(query);
+              selectedTerm = query;
+            });
+            controller?.close();
+          },
+          onQueryChanged: (query) {
+            setState(() {
+              filteredSearchHistory = filterSearchTerms(filter: query);
+            });
+          },
+          actions: [
+            FloatingSearchBarAction.searchToClear(),
+          ],
+          transition: CircularFloatingSearchBarTransition(),
+          // Bouncing physics for the search history
+          physics: BouncingScrollPhysics(),
+
+          controller: controller,
           builder: (context, transition) {
-            return Text('sd');
+            return Text('');
           },
           body: FloatingSearchBarScrollNotifier(
             child: Column(
@@ -45,39 +129,46 @@ class RecipePage extends HookWidget {
                   height: 55,
                 ),
                 Expanded(
-                  child: foods.when(
-                    loading: () => const CircularProgressIndicator(),
-                    error: (err, stack) => Text('Error: $err'),
-                    data: (foods) => foods.isEmpty
-                        ? Center(child: Text('Tap + to add a food item.'))
-                        : (GridView.count(
-                            crossAxisCount: 2,
-                            children: List.generate(
-                              foods.length,
-                              (index) {
-                                final foodItem = foods[index];
-                                return GestureDetector(
-                                  child: CreateStyleCard(foodItem: foodItem),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FoodInfoPage(
-                                          food: foodItem,
-                                        ),
-                                      ),
+                  child: Consumer(
+                    builder: (context, watch, child) {
+                      var foods = watch(foodItemListControllerProvider.state);
+                      return foods.when(
+                        loading: () =>
+                            Center(child: CircularProgressIndicator()),
+                        error: (err, stack) => Text('Error: $err'),
+                        data: (foods) => foods.isEmpty
+                            ? Center(child: Text('Tap + to add a food item.'))
+                            : (GridView.count(
+                                crossAxisCount: 2,
+                                children: List.generate(
+                                  foods.length,
+                                  (index) {
+                                    final foodItem = foods[index];
+                                    return GestureDetector(
+                                      child:
+                                          CreateStyleCard(foodItem: foodItem),
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FoodInfoPage(
+                                              food: foodItem,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      onLongPressStart: (LongPressStartDetails
+                                          details) async {
+                                        showRecipePagePopupMenu(
+                                            context, foodItem, details);
+                                        //show popup menu to delete item
+                                      },
                                     );
                                   },
-                                  onLongPressStart:
-                                      (LongPressStartDetails details) async {
-                                    showRecipePagePopupMenu(
-                                        context, foodItem, details);
-                                    //show popup menu to delete item
-                                  },
-                                );
-                              },
-                            ),
-                          )),
+                                ),
+                              )),
+                      );
+                    },
                   ),
                 ),
               ],

@@ -18,6 +18,7 @@ class _TodayPageState extends State<TodayPage>
   void initState() {
     randomItem = 8;
     super.initState();
+    RecommendedFood().retrieveFoodNames();
   }
 
   @override
@@ -61,7 +62,16 @@ class _TodayPageState extends State<TodayPage>
                       //   // for today
                       // }
                       return foods.isEmpty
-                          ? Text('No foods have been added yet!')
+                          ? Container(
+                              height: height,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('No foods have been added yet!'),
+                                  SizedBox(height: 250)
+                                ],
+                              ),
+                            )
                           : Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -191,10 +201,14 @@ class _TodayPageState extends State<TodayPage>
   }
 }
 
-// class RecommendedFood {
-//   // if a food's last made date exceeds its frequency value, or if the last made
-//   // date is null add it to the list of recommended food for today
-//   final foodProvider = Provider(
-//     (ref) async => await ref.watch(foodItemListControllerProvider.state),
-//   );
-// }
+class RecommendedFood {
+  // if a food's last made date exceeds its frequency value, or if the last made
+  // date is null add it to the list of recommended food for today
+  final foodProvider = Provider(
+    (ref) async => await ref.watch(foodItemListControllerProvider.state),
+  );
+
+  Future<void> retrieveFoodNames() async {
+    print(foodProvider);
+  }
+}
