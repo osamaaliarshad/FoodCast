@@ -14,11 +14,12 @@ class _TodayPageState extends State<TodayPage>
     with AutomaticKeepAliveClientMixin<TodayPage> {
   int? randomItem;
   int randomizer(List<FoodItem> foods) => Random().nextInt(foods.length);
+
+  var foods;
   @override
   void initState() {
-    randomItem = 8;
     super.initState();
-    RecommendedFood().retrieveFoodNames();
+    //var _data = List.generate(foods.data?.length, (index) => foods[index]);
   }
 
   @override
@@ -28,6 +29,7 @@ class _TodayPageState extends State<TodayPage>
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
+    final foodProvider = context.read(foodItemListControllerProvider.state);
 
     super.build(context);
 
@@ -51,9 +53,19 @@ class _TodayPageState extends State<TodayPage>
                 builder: (context, watch, child) {
                   var foods = watch(foodItemListControllerProvider.state);
                   return foods.when(
-                    loading: () => Center(child: CircularProgressIndicator()),
+                    loading: () => Container(
+                      height: height,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Center(child: CircularProgressIndicator()),
+                          SizedBox(height: 250)
+                        ],
+                      ),
+                    ),
                     error: (err, stack) => Text('Error: $err'),
                     data: (foods) {
+                      randomItem = randomizer(foods);
                       return foods.isEmpty
                           ? Container(
                               height: height,
@@ -185,20 +197,13 @@ class _TodayPageState extends State<TodayPage>
 }
 
 class RecommendedFood {
+  var foodList;
+
   // if a food's last made date exceeds its frequency value, or if the last made
   // date is null add it to the list of recommended food for today
-  final foodProvider = Provider(
-    (context) async => await context.read(foodItemListControllerProvider.state),
-  );
+  RecommendedFood(this.foodList);
 
   Future<void> retrieveFoodNames() async {
-    // var arr = List.filled(foods.length, 0);
-    // for (int i = 0; i < foods.length; i++) {
-    //   // if a food's last made date exceeds its frequency
-    //   // value, or if the last made
-    //   // date is null add it to the list of recommended food
-    //   // for today
-    // }
-    print(foodProvider);
+    print(foodList);
   }
 }
